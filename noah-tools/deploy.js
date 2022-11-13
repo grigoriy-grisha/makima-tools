@@ -30,22 +30,18 @@ const createManifest = (name, version) =>
 	);
 
 const deployModule = async (info, npmConfig) => {
-	if (moduleInfo.isDisabled(info)) {
-		console.log(chalk`{green ${info.name}} {bold.greenBright отключен}`);
-		return;
-	}
-
 	const pacoteOptions = npmConfigResolver(npmConfig);
 
 	const isLatest = info.fetchSpec === 'latest';
 	const manifest = await pacote.manifest(info.raw, pacoteOptions);
+
 	const versionToInstall = info.rawSpec || (isLatest ? manifest.version : info.fetchSpec);
-	const relativeFolder = path.relative(process.cwd(), `${tvFolderPath}${info.deployPath}`);
+	const relativeFolder = path.relative(process.cwd(), tvFolderPath);
 
 	logger.debug('deploy module: %s', info);
 
 	await fsExtra.ensureDir(relativeFolder);
-	await pacote.extract(
+	const as = await pacote.extract(
 		[info.name, versionToInstall].filter(Boolean).join('@'),
 		relativeFolder,
 		pacoteOptions,
@@ -69,6 +65,7 @@ const deployModules = async (modulesList, useCache) => {
 		...libnpmconfig.read().toJSON(),
 		preferOffline: useCache,
 	};
+
 	const [[tv], restModules] = R.partition(R.propEq('name', tvPackageName), modulesList);
 
 	logger.debug('deploy modules %j', modulesList);
@@ -88,32 +85,26 @@ const deployModules = async (modulesList, useCache) => {
 const deployCommand = async (options) => {
 	const packageJson = await readPackageJson();
 	const config = readConfig();
-	const modulesFromBaseConfig = baseConfig.modules;
 	const modulesFromProjectConfig = config.modules;
 	const modulesFromArgs = options.modules;
-	const modulesFromCommits = await readModulesFromCommits(options.from, options.to);
 	const currentModule = [`${packageJson.name}@file://.`];
 
 	const modulesList = [
-		modulesFromBaseConfig,
 		modulesFromProjectConfig,
-		modulesFromCommits,
 		modulesFromArgs,
 		currentModule,
 	]
 		.map((list) => list.map(moduleInfo.create))
 		.reduce(moduleInfo.mergeLists, []);
 
-	logger.debug('base modules: %j', modulesFromBaseConfig);
 	logger.debug('project config modules: %j', modulesFromProjectConfig);
 	logger.debug('args modules: %j', modulesFromArgs);
-	logger.debug('commits modules: %j', modulesFromCommits);
 	logger.debug('current module: %j', currentModule);
 
 	await deployModules(modulesList, options.cache);
 };
 
 module.exports = {
-		deployModules,
+	deployModules,
 	deployCommand,
 };

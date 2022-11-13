@@ -25,6 +25,7 @@ module.exports = async (args = {}) => {
 	const env = createModuleEnvParams(prefixEnv);
 	const buildTypePrefix = args?.type ? `${args.type}-` : '';
 
+
 	return {
 		entry: {
             [projectName]: './src/index.tsx',
@@ -73,8 +74,6 @@ module.exports = async (args = {}) => {
 				writeToFileEmit: true,
 				fileName: `../${buildTypePrefix}importmap.json`,
 				generate: (seed, files, entries) => {
-					console.log( publicPathDist, 'publicPathDist');
-
 					return entries?.main
 						? {
 							imports: {

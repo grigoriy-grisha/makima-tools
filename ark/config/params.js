@@ -8,21 +8,6 @@ const getClientEnvironment = require('./env');
 const pkg = require('../package.json');
 
 const modules = [
-	{
-		name: '@cib/module.auth',
-		var: '@cib/module.auth',
-		path: 'lib/module.auth.min.js',
-	},
-	{
-		name: '@cib/module.sup-manager',
-		var: '@cib/module.sup-manager',
-		path: 'lib/module.sup-manager.min.js',
-	},
-	{
-		name: '@cib/module.classifiers',
-		var: '@cib/module.classifiers',
-		path: 'lib/module.classifiers.min.js',
-	},
 	{ name: 'react', path: 'umd/react.production.min.js' },
 	{
 		name: 'react-dom',
@@ -31,29 +16,6 @@ const modules = [
 	{
 		name: 'react-router-dom',
 		path: 'umd/react-router-dom.production.min.js',
-	},
-	{
-		name: 'history',
-		path: 'umd/history.production.min.js',
-	},
-	{
-		name: 'react-router',
-		path: 'umd/react-router.production.min.js',
-	},
-	{
-		name: '@cib/platform',
-		var: '@cib/platform',
-		path: 'lib/platform.min.js',
-	},
-	{
-		name: '@cib/event-bus',
-		var: '@cib/event-bus',
-		path: 'lib/event-bus.min.js',
-	},
-	{
-		name: '@cib/logger',
-		var: '@cib/logger',
-		path: 'lib/cib-logger.min.js',
 	},
 ];
 

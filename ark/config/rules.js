@@ -10,7 +10,7 @@ const cacheLoader = {
 const createRules = (orgName, projectName) => {
 	return [
 		{
-			test: /\.tsx?$/,
+			test: /\.(tsx|ts)?$/,
 			use: [cacheLoader, 'awesome-typescript-loader'],
 		},
 

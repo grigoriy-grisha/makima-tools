@@ -1,4 +1,5 @@
 const R = require('ramda');
+const path = require('path')
 const chalk = require('chalk');
 const defaultConfig = require('../moduleSettings/module.config.default');
 const moduleConfig = require("../moduleSettings/module.config.js")
@@ -11,26 +12,7 @@ const mapToDestinationFormat = (config) => ({
 });
 
 const readConfig = () => {
-	const config = {
-		projectPrefix: '@kksb',
-		projectName: 'loan-tasks',
-		sonarKey: 'ru.sbrf.ufs.rmkiksb:taskmanager-ui',
-		openUrl: '/loan-tasks',
-		bhAppPort: 3000,
-		bhAppScheme: 'http',
-		bhAppHost: 'localhost',
-		devServerPort: 8080,
-		modules: [
-			// '@enigma/tv@file:../television',
-			'@enigma/tv@develop',
-			// { name: '@enigma/module.service-requests' },
-			// { name: '@enigma/tv', deployPath: '' }
-		],
-		externals: ['@cib/logger'],
-		publicPath: '/loan-tasks-static/loan-tasks',
-	}
-
-	return mapToDestinationFormat(config);
+	return  require(path.resolve(process.cwd(), './module.config.js'));
 };
 
 const checkConfig = async () => {

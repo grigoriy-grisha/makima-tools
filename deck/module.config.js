@@ -1,5 +1,5 @@
 module.exports = {
-	// projectPrefix: '@kksb',
+	projectPrefix: '@kksb',
 	projectName: 'loan-tasks',
 	sonarKey: 'ru.sbrf.ufs.rmkiksb:taskmanager-ui',
 	openUrl: '/loan-tasks',
@@ -8,8 +8,8 @@ module.exports = {
 	bhAppHost: 'localhost',
 	devServerPort: 8080,
 	modules: [
-		// '@enigma/tv@file:../television',
-		'@enigma/tv@develop',
+		'@enigma/tv@file:../ark',
+		// '@enigma/tv@develop',
 		// { name: '@enigma/module.service-requests' },
 		// { name: '@enigma/tv', deployPath: '' }
 	],

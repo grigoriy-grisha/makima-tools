@@ -17,7 +17,7 @@ module.exports = async () => {
 		publicPath,
 		liveReload,
 	} = readConfig();
-	console.log(readConfig(),'readConfig()')
+
 	const env = createModuleEnvParams();
 	const publicPathDist = urljoin(publicPath, '/dist/');
 	const filename = `${projectName}-dev-[fullhash].js`;

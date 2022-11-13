@@ -4,14 +4,15 @@ if (process.env.NODE_ENV === 'development') {
 const path = require('path');
 const webpack = require('webpack');
 const pkg = require('./package.json');
+const proxy = require('./config/proxy');
 const webpackMerge = require('webpack-merge');
 const singleSpaDefaults = require('webpack-config-single-spa-react-ts');
-// const ManifestPlugin = require('webpack-manifest-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-// const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const {
@@ -34,6 +35,8 @@ const files = modules.reduce((res, { name, path }) => ({ ...res, [name]: `/${pat
 const tvModuleName = '@kksb/tv';
 
 module.exports = (webpackConfigEnv, argv) => {
+
+    debugger
     const host = argv.host || '';
     const mode = argv.mode === 'production';
     const htmlWebpackPlugin = new HtmlWebpackPlugin({
@@ -67,6 +70,10 @@ module.exports = (webpackConfigEnv, argv) => {
         return f.test ? f.test.toString() !== '/\\.css$/i' : true;
     });
 
+    defaultConfig.externals.push('react');
+    defaultConfig.externals.push('react-router-dom');
+    defaultConfig.externals.push('react-router');
+
     return webpackMerge.strategy({
         plugins: 'replace',
     })(defaultConfig, {
@@ -85,6 +92,7 @@ module.exports = (webpackConfigEnv, argv) => {
             historyApiFallback: true,
             port: process.env.PORT || 3005,
             host: process.env.HOST || '0.0.0.0',
+            proxy,
         },
         module: {
             rules: createRules(orgName, projectName),
@@ -106,21 +114,25 @@ module.exports = (webpackConfigEnv, argv) => {
                 ...env.raw,
             }),
             webpackCdnPlugin,
-            // new ManifestPlugin({
-            //     basePath: outDir,
-            //     fileName: 'importmap.json',
-            //     generate: () => {
-            //         return {
-            //             imports: { [`${tvModuleName}`]: `/${filename}` },
-            //         };
-            //     },
-            // }),
+            new ManifestPlugin({
+                basePath: outDir,
+                fileName: 'importmap.json',
+                generate: () => {
+                    return {
+                        imports: { [`${tvModuleName}`]: `/${filename}` },
+                    };
+                },
+            }),
+            new ManifestPlugin({
+                basePath: outDir,
+                fileName: 'core-importmap.json',
+                generate: () => {
+                    return { imports: files };
+                },
+            }),
             new CopyWebpackPlugin({
                 patterns: [{ from: publicPath, to: '' }, ...copyPatterns(outDir, [...modules, ...cdnList])],
             }),
-            // new ServiceWorkerWebpackPlugin({
-            //     entry: path.join(__dirname, 'src/sw.ts'),
-            // }),
             new Dotenv(),
         ],
     });
