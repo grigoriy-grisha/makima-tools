@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="importmap-type" content="systemjs-importmap"/>
-    <script type="systemjs-importmap" src="./dist/importmap.json"></script>
-    <script type="systemjs-importmap" src="./dist/core-importmap.json"></script>
+    <script type="systemjs-importmap" src="/dist/importmap.json"></script>
+    <script type="systemjs-importmap" src="/dist/core-importmap.json"></script>
     <script src="/dist/dist/system.min.js"></script>
     <script src="/dist/dist/extras/amd.min.js"></script>
     <script src="/dist/dist/extras/named-exports.min.js"></script>
-    <script>
+    <script>console.log(window.System)
     if (window.System) {
         System.import("@kksb/tv");
     } else {

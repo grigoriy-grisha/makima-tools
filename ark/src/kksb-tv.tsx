@@ -1,4 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(<div>hello</div>, document.getElementById('root'));
+const App = () => {
+    useEffect(() => {
+        console.log(fetch('/loan-tasks-static/loan-tasks/importmap.json').then(r => r.json()).then(console.log));
+    },[])
+    return <div>hello</div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
