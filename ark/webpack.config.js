@@ -36,7 +36,6 @@ const tvModuleName = '@kksb/tv';
 
 module.exports = (webpackConfigEnv, argv) => {
 
-    debugger
     const host = argv.host || '';
     const mode = argv.mode === 'production';
     const htmlWebpackPlugin = new HtmlWebpackPlugin({
