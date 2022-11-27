@@ -2,6 +2,7 @@ const R = require('ramda');
 const path = require('path');
 const chalk = require('chalk');
 const fsExtra = require('fs-extra');
+const fs = require('fs')
 const pacote = require('pacote');
 const libnpmconfig = require('libnpmconfig');
 const { tvPackageName, tvFolderPath } = require('./configs/constants');
@@ -41,11 +42,31 @@ const deployModule = async (info, npmConfig) => {
 	logger.debug('deploy module: %s', info);
 
 	await fsExtra.ensureDir(relativeFolder);
+
 	const as = await pacote.extract(
 		[info.name, versionToInstall].filter(Boolean).join('@'),
 		relativeFolder,
 		pacoteOptions,
 	);
+
+	try {
+		fsExtra.copySync(path.join(tvFolderPath, 'dist'), path.join(tvFolderPath, 'dist-temp'), { overwrite: true })
+		fs.rmdirSync(path.join(tvFolderPath, 'dist'), {recursive: true})
+		fsExtra.copySync(path.join(tvFolderPath, 'dist-temp'), path.join(tvFolderPath), { overwrite: true })
+		fs.rmdirSync(path.join(tvFolderPath, 'dist-temp'), {recursive: true})
+	} catch (err) {
+		console.error(err)
+	}
+
+
+
+	// await pacote.extract(
+	// 	[info.name, versionToInstall].filter(Boolean).join('@') + "/dist/",
+	// 	relativeFolder,
+	// 	pacoteOptions,
+	// );
+
+
 	await fsExtra.writeFile(
 		path.resolve(relativeFolder, './manifest.json'),
 		createManifest(info.name, versionToInstall),

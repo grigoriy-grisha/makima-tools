@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="importmap-type" content="systemjs-importmap"/>
-    <script type="systemjs-importmap" src="./dist/importmap.json"></script>
-    <script type="systemjs-importmap" src="./dist/core-importmap.json"></script>
+    <script type="systemjs-importmap" src="/importmap.json"></script>
+    <script type="systemjs-importmap" src="/core-importmap.json"></script>
 
    <% htmlWebpackPlugin.files.js.slice(modules.length).filter((link) => link !== tvPathFile).forEach(function(link){ %>
         <% modules.length %>
-        <script src="/dist/<%= link %>"></script>
+        <script src="<%= link %>"></script>
     <% }) %>
     <script>
     console.log(window.System)

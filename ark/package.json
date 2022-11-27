@@ -20,7 +20,7 @@
 		"sw.js"
 	],
 	"scripts": {
-		"build-new": "webpack --mode=production && node cli.js",
+		"build-new": "webpack --mode=production",
 		"build": "webpack --mode=production",
 		"analyze": "webpack --mode=production --env.analyze=true",
 		"lint": "eslint ./src --fix --ext js,ts,tsx",

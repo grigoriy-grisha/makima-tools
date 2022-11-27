@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import DynamicModule from "../shared/DynamicModule";
 
 const App = () => {
-    useEffect(() => {
-        console.log(fetch('/loan-tasks-static/loan-tasks/importmap.json').then(r => r.json()).then(console.log));
-    },[])
-    return <div>hello</div>
+    return <DynamicModule path="/loan-tasks-static/loan-tasks" name="@kksb/loan-tasks" />
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
